@@ -1,0 +1,6 @@
+﻿$HTMLHead = "<style>"
+$HTMLHead = $HTMLHead + "BODY{background-color:white;}"
+$HTMLHead = $HTMLHead + "TABLE{border-width: 1px;border-style: solid;border-color: black;border-collapse: collapse;}"
+$HTMLHead = $HTMLHead + "TH{border-width: 1px;padding: 0px;border-style: solid;border-color: black;}"
+$HTMLHead = $HTMLHead + "TD{border-width: 1px;padding: 0px;border-style: solid;border-color: black;}"
+$HTMLHead = $HTMLHead + "</style>"

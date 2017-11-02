@@ -1,0 +1,1 @@
+﻿Get-ADComputer -Filter {Enabled -eq $true} -Properties CanonicalName, Name, LastLogonDate | ? {($_.Name -like "*xray*") -or ($_.Name -like "*Progeny*") -or ($_.Name -like "*IMA4600*")} | Sort-Object Name | Export-CSV -Path "C:\users\$env:username\desktop\xray.csv" -Append
