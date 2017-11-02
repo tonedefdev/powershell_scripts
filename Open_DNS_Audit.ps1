@@ -19,7 +19,7 @@ $userfield = "username"
 $passwordfield = "password"
 $submitbutton = "sign-in"
 $username = "aowens@nvanet.com"
-$password = "P00dle!!"
+$password = ""
 
 ($ie.Document.getElementsByName($userfield) | Select -First 1).value= $username
 ($ie.Document.getElementsByName($passwordfield) | Select -First 1).value = $password
