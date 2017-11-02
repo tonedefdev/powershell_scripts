@@ -4,13 +4,15 @@ Param (
 [string]$Computer
 )
 
+    $Credential = New-Object Management.Automation.PSCredential "hospital\servicedesk", ('Yo$h122!' | ConvertTo-SecureString -AsPlainText -Force)
+
     if ((Test-Connection -Count 2 -ComputerName $Computer -Quiet -ErrorAction SilentlyContinue) -eq $true) {
     
         $Connected = "Connected"
 
         $Check = @()
         
-        $KB = Get-WmiObject -ComputerName $Computer -Class win32_quickfixengineering
+        $KB = Get-WmiObject -ComputerName $Computer -Class win32_quickfixengineering -Credential $Credential
 
         if ($KB.HotFixID -eq "KB4015549") {
             $HotFixInstalled = "Pass"
@@ -60,8 +62,11 @@ Param (
             $InstalledOn = " "
         }
 
+        $DNSName = Get-WmiObject Win32_Computersystem -ComputerName $Computer -Credential $Credential | Select-Object -ExpandProperty Name
+
         $AuditReport = New-Object System.Object
         $AuditReport | Add-Member -Type NoteProperty -Name Server -Value $Computer
+        $AuditReport | Add-Member -Type NoteProperty -Name Name -Value $DNSName
         $AuditReport | Add-Member -Type NoteProperty -Name Connection -Value $Connected
         $AuditReport | Add-Member -Type NoteProperty -Name HotFixInstalled -Value $HotFixInstalled
         $AuditReport | Add-Member -Type NoteProperty -Name HotFixID -Value $HotFix
@@ -74,6 +79,7 @@ Param (
 
         $AuditReport = New-Object System.Object
         $AuditReport | Add-Member -Type NoteProperty -Name Server -Value $Computer
+        $AuditReport | Add-Member -Type NoteProperty -Name Name -Value " "
         $AuditReport | Add-Member -Type NoteProperty -Name Connection -Value $Connected
         $AuditReport | Add-Member -Type NoteProperty -Name HotFixInstalled -Value " "
         $AuditReport | Add-Member -Type NoteProperty -Name HotFixID -Value " "
@@ -83,7 +89,6 @@ Param (
     }
 }
 
-Import-Module ActiveDirectory
 $Computers = Get-Content "C:\users\aowens\desktop\hospitals.txt"
 $Throttle = 100
 $initialSessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
